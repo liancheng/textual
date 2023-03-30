@@ -33,7 +33,7 @@ def screen() -> Screen:
         Focusable(Focusable(id="Paul", classes="c"), id="container1", classes="b"),
         NonFocusable(Focusable(id="Jessica", classes="a"), id="container2"),
         Focusable(id="baz", classes="b"),
-        ChildrenFocusableOnly(Focusable(id="child", classes="c")),
+        ChildrenFocusableOnly(Focusable(id="child", classes="c"), id="container3"),
     )
 
     return screen
@@ -201,3 +201,8 @@ def test_focus_next_and_previous_with_str_selector_without_self(screen: Screen):
     assert screen.focus_previous(".a").id == "foo"
     assert screen.focus_previous(".a").id == "foo"
     assert screen.focus_previous(".b").id == "baz"
+
+
+async def test_action_focus_with_child_focusable_only(screen: Screen):
+    await screen.app.action_focus("container3")
+    assert screen.focused.id == "child"

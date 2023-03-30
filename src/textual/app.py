@@ -2352,7 +2352,10 @@ class App(Generic[ReturnType], DOMNode):
             pass
         else:
             if isinstance(node, Widget):
-                self.set_focus(node)
+                if node.can_focus:
+                    self.set_focus(node)
+                elif node.can_focus_children and len(node.children) > 0:
+                    self.set_focus(node.children[0])
 
     async def action_switch_screen(self, screen: str) -> None:
         """Switches to another screen.
